@@ -18,5 +18,5 @@ jobs:
           password: "${{ secrets.REGISTRY_PASSWORD }}"
       - name: Build and push image
         run: |
-          docker build -t ticketingregistry.azurecr.io/ticketing/auth auth
+          cd auth && docker build -t ticketingregistry.azurecr.io/ticketing/auth .
           docker push ticketingregistry.azurecr.io/ticketing/auth
