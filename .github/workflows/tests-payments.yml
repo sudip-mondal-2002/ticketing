@@ -4,6 +4,8 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
+    paths:
+      - payments/**
 
 jobs:
   build:

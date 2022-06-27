@@ -4,7 +4,9 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
-
+    paths:
+      - tickets/**
+      
 jobs:
   build:
     runs-on: ubuntu-latest
