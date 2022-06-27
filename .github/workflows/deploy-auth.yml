@@ -1,0 +1,21 @@
+name: deploy-auth
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'auth/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Push Image to ACR
+      working-directory: ./auth
+      uses: julioarruda/pushimagetoregistry@v1
+      with:
+        acr-tokenname: ${{ secrets.ACR_TOKEN_NAME }}
+        acr-token: ${{ secrets.ACR_TOKEN_VALUE }}
+        acr-account: ticketingregistry.azurecr.io
+        acr-imagename: ticketingregistry.azurecr.io/ticketing/auth
