@@ -6,16 +6,17 @@ on:
       - master
     paths:
       - 'auth/**'
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Push Image to ACR
-      working-directory: ./auth
-      uses: julioarruda/pushimagetoregistry@v1
-      with:
-        acr-tokenname: ${{ secrets.ACR_TOKEN_NAME }}
-        acr-token: ${{ secrets.ACR_TOKEN_VALUE }}
-        acr-account: ticketingregistry.azurecr.io
-        acr-imagename: ticketingregistry.azurecr.io/ticketing/auth
+      - name: Login to ACR
+        uses: aliyun/acr-login@v1
+        with:
+          login-server: ticketingregistry.azurecr.io
+          username: "${{ secrets.REGISTRY_USERNAME }}"
+          password: "${{ secrets.REGISTRY_PASSWORD }}"
+      - name: Build and push image
+        run: |
+          docker build -t ticketingregistry.azurecr.io/ticketing/auth ./auth
+          docker push ticketingregistry.azurecr.io/ticketing/auth
