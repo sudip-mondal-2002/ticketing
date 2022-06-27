@@ -1,9 +1,11 @@
 apiVersion: skaffold/v2beta28
 kind: Config
+
 deploy:
   kubectl:
     manifests:
       - config/k8s/*.yaml
+
 build:
   artifacts:
     - image: sudipmondaldemo.azurecr.io/ticketing/auth
