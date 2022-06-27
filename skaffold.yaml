@@ -1,0 +1,56 @@
+apiVersion: skaffold/v2beta28
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - config/k8s/*.yaml
+build:
+  artifacts:
+    - image: sudipmondaldemo.azurecr.io/ticketing/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.ts'
+    - image: sudipmondaldemo.azurecr.io/ticketing/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '**/*.js'
+    - image: sudipmondaldemo.azurecr.io/ticketing/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.ts'
+    - image: sudipmondaldemo.azurecr.io/ticketing/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.ts'
+    - image: sudipmondaldemo.azurecr.io/ticketing/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.ts'
+    - image: sudipmondaldemo.azurecr.io/ticketing/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.ts'
