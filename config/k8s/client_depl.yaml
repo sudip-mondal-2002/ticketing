@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: sudipmondaldemo.azurecr.io/ticketing/client
+          image: ticketingregistry.azurecr.io/ticketing/client
 ---
 apiVersion: v1
 kind: Service

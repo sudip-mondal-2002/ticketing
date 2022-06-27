@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: expiration
-          image: sudipmondaldemo.azurecr.io/ticketing/expiration
+          image: ticketingregistry.azurecr.io/ticketing/expiration
           env:
             - name: NATS_URL
               value: nats://nats-srv:4222

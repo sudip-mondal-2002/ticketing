@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: orders
-          image: sudipmondaldemo.azurecr.io/ticketing/orders
+          image: ticketingregistry.azurecr.io/ticketing/orders
           env:
             - name: JWT_KEY
               valueFrom:

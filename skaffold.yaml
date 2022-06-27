@@ -6,7 +6,7 @@ deploy:
       - config/k8s/*.yaml
 build:
   artifacts:
-    - image: sudipmondaldemo.azurecr.io/ticketing/auth
+    - image: ticketingregistry.azurecr.io/ticketing/auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -14,7 +14,7 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
-    - image: sudipmondaldemo.azurecr.io/ticketing/client
+    - image: ticketingregistry.azurecr.io/ticketing/client
       context: client
       docker:
         dockerfile: Dockerfile
@@ -22,7 +22,7 @@ build:
         manual:
           - dest: .
             src: '**/*.js'
-    - image: sudipmondaldemo.azurecr.io/ticketing/tickets
+    - image: ticketingregistry.azurecr.io/ticketing/tickets
       context: tickets
       docker:
         dockerfile: Dockerfile
@@ -30,7 +30,7 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
-    - image: sudipmondaldemo.azurecr.io/ticketing/orders
+    - image: ticketingregistry.azurecr.io/ticketing/orders
       context: orders
       docker:
         dockerfile: Dockerfile
@@ -38,7 +38,7 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
-    - image: sudipmondaldemo.azurecr.io/ticketing/expiration
+    - image: ticketingregistry.azurecr.io/ticketing/expiration
       context: expiration
       docker:
         dockerfile: Dockerfile
@@ -46,7 +46,7 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
-    - image: sudipmondaldemo.azurecr.io/ticketing/payments
+    - image: ticketingregistry.azurecr.io/ticketing/payments
       context: payments
       docker:
         dockerfile: Dockerfile
