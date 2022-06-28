@@ -11,7 +11,7 @@ const OrderShow = ({ order, currentUser }) => {
             orderId: order.id
         },
         onSuccess: () => {
-            Router.push('/orders')
+            Router.push('/orders', undefined, { shallow: true })
         }
     })
     React.useEffect(() => {

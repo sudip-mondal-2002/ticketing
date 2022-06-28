@@ -9,7 +9,7 @@ const TicketShow = ({ticket}) => {
             ticketId: ticket.id
         },
         onSuccess: (order) => {
-            Router.push('/orders/[orderId]', `/orders/${order.data.id}`)
+            Router.push('/orders/[orderId]', `/orders/${order.data.id}`, { shallow: true })
         }
     })
     return (

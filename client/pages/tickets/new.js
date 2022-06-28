@@ -21,7 +21,7 @@ const New = () => {
         onSuccess: () => {
             setPrice('');
             setTitle('');
-            Router.push('/')
+            Router.push('/', undefined, { shallow: true })
         }
     })
     const submitHandler = (e)=>{

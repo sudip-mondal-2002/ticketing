@@ -12,7 +12,7 @@ const Signup = () => {
             email,
             password
         },
-        onSuccess: () => Router.push("/")
+        onSuccess: () => Router.push("/", undefined, { shallow: true })
     })
     const submitHandler = async (e) => {
         e.preventDefault();
