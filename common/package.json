@@ -9,8 +9,7 @@
   ],
   "scripts": {
     "prebuild": "del-cli ./build/*",
-    "build": "tsc",
-    "pub": "npm version patch && npm run build && npm publish"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
