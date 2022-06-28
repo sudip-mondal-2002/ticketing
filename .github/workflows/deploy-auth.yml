@@ -6,6 +6,12 @@ on:
       - master
     paths:
       - 'auth/**'
+env:
+  REGISTRY_NAME: ticketingregistry
+  CLUSTER_NAME: ticketing
+  CLUSTER_RESOURCE_GROUP: SudipMondal 
+  NAMESPACE: default
+  APP_NAME: ticketing/auth
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,26 +21,31 @@ jobs:
           submodules: true
           
       - name: Login to ACR
-        uses: aliyun/acr-login@v1
+        uses: azure/docker-login@v1
         with:
-          login-server: ticketingregistry.azurecr.io
-          username: "${{ secrets.REGISTRY_USERNAME }}"
-          password: "${{ secrets.REGISTRY_PASSWORD }}"
+          login-server: ${{ env.REGISTRY_NAME }}.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }} 
+          password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Build and push image
         run: |
-          cd auth && docker build -t ticketingregistry.azurecr.io/ticketing/auth .
-          docker push ticketingregistry.azurecr.io/ticketing/auth
-      - name: Azure CLI login
-        uses: azure/login@v1
+          docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
+          docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
+        working-directory: ./auth
+      - uses: azure/k8s-create-secret@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          environment: 'AzureStack'
-      - uses: azure/setup-kubectl@v2.0
-      - name: AKS Context Set
-        uses: azure/aks-set-context@v2.0
+          container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
+          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          secret-name: ${{ env.SECRET }}
+          namespace: ${{ env.NAMESPACE }}
+          arguments: --force true
+      - uses: azure/k8s-deploy@v1
         with:
-          resource-group: 'SudipMondal'
-          cluster-name: 'ticketing'
-          admin: 'true'
-      - name: Restart kubernetes deployment
-        run: kubectl rollout restart deployment auth-depl
+          manifests: |
+            ${{ github.workspace }}/config/k8s/auth_depl.yaml
+            ${{ github.workspace }}/config/k8s/auth_mongo_depl.yaml
+          images: |
+            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+          imagepullsecrets: |
+            ${{ env.SECRET }}
+          namespace: ${{ env.NAMESPACE }}
