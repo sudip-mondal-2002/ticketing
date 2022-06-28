@@ -33,7 +33,7 @@ jobs:
           docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
         working-directory: ./client
       - name: Azure Kubernates Set Context
-        uses: azure/aks-set-context@v1
+        uses: azure/aks-set-context@v3
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: ${{ env.CLUSTER_NAME }}

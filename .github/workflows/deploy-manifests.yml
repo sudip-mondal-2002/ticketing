@@ -21,7 +21,7 @@ jobs:
         with:
           submodules: true
           
-      - uses: azure/aks-set-context@v1
+      - uses: azure/aks-set-context@v3
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: ${{ env.CLUSTER_NAME }}
