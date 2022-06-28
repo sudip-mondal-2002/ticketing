@@ -32,12 +32,6 @@ jobs:
           docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
           docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
         working-directory: ./payments
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true
       - name: Azure Kubernates Set Context
         uses: azure/aks-set-context@v1
         with:
