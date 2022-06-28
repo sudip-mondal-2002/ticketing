@@ -30,6 +30,8 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           environment: 'AzureStack'
       - name: AKS Context setting
-        run: az aks get-credentials --resource-group SudipMondal --name ticketing
+        run: |
+          az config set extension.use_dynamic_install=yes_without_prompt
+          az aks get-credentials --resource-group SudipMondal --name ticketing
       - name: Restart kubernetes deployment
         run: kubectl rollout restart deployment auth-depl
