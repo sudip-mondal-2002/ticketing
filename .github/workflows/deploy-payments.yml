@@ -49,7 +49,6 @@ jobs:
         with:
           manifests: |
             ${{ github.workspace }}/config/k8s/payments_depl.yaml
-            ${{ github.workspace }}/config/k8s/payments_mongo_depl.yaml
           images: |
             ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
           imagepullsecrets: |
