@@ -1,6 +1,6 @@
 {
-  "name": "@tickeing-sm/common",
-  "version": "1.0.14",
+  "name": "@sudip-mondal-2002/common",
+  "version": "1.0.0",
   "description": "@",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
