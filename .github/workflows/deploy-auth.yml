@@ -11,6 +11,7 @@ env:
   CLUSTER_NAME: ticketing
   CLUSTER_RESOURCE_GROUP: SudipMondal 
   NAMESPACE: default
+  SECRET: ticketing
   APP_NAME: ticketing/auth
 jobs:
   build:
