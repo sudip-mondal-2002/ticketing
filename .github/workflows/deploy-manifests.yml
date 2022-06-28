@@ -1,4 +1,4 @@
-name: deploy-auth
+name: deploy-manifests
 
 on:
   push:
@@ -35,5 +35,5 @@ jobs:
           namespace: ${{ env.NAMESPACE }}
           arguments: --force true
       - run: |
-          kubectl apply -f ${{ github.workspace }}/config/k8s/*.yaml
-          kubectl apply -f ${{ github.workspace }}/config/k8s-prod/*.yaml
+          kubectl apply -f ./config/k8s/*.yaml
+          kubectl apply -f ./config/k8s-prod/*.yaml
