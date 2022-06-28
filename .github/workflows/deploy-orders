@@ -1,0 +1,26 @@
+name: deploy-orders
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'auth/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          
+      - name: Login to ACR
+        uses: aliyun/acr-login@v1
+        with:
+          login-server: ticketingregistry.azurecr.io
+          username: "${{ secrets.REGISTRY_USERNAME }}"
+          password: "${{ secrets.REGISTRY_PASSWORD }}"
+      - name: Build and push image
+        run: |
+          cd orders && docker build -t ticketingregistry.azurecr.io/ticketing/orders .
+          docker push ticketingregistry.azurecr.io/ticketing/orders
