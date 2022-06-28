@@ -29,7 +29,6 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           environment: 'AzureStack'
-      - name: Set up kubelogin for non-interactive login
       - uses: azure/setup-kubectl@v2.0
       - name: AKS Context Set
         uses: azure/aks-set-context@v2
