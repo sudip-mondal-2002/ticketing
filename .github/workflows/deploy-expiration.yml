@@ -48,7 +48,7 @@ jobs:
           namespace: ${{ env.NAMESPACE }}
           arguments: --force true
       - name: deploy to AKS
-        uses: azure/k8s-deploy@v1
+        uses: azure/k8s-deploy@v4
         with:
           manifests: |
             ${{ github.workspace }}/config/k8s/expiration_depl.yaml
