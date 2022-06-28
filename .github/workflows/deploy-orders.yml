@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - 'auth/**'
+      - 'orders/**'
 jobs:
   build:
     runs-on: ubuntu-latest
