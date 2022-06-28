@@ -35,6 +35,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
       - name: Azure Kubernates Set Context
         uses: azure/aks-set-context@v1
         with:
