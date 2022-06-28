@@ -32,12 +32,17 @@ jobs:
           docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
           docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
         working-directory: ./payments
-      - uses: azure/aks-set-context@v1
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Kubernates Set Context
+        uses: azure/aks-set-context@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: ${{ env.CLUSTER_NAME }}
           resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
-      - uses: azure/k8s-create-secret@v1
+      - name: AKS create secret
+        uses: azure/k8s-create-secret@v1
         with:
           container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
           container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
@@ -45,7 +50,8 @@ jobs:
           secret-name: ${{ env.SECRET }}
           namespace: ${{ env.NAMESPACE }}
           arguments: --force true
-      - uses: azure/k8s-deploy@v1
+      - name: deploy to AKS
+        uses: azure/k8s-deploy@v1
         with:
           manifests: |
             ${{ github.workspace }}/config/k8s/payments_depl.yaml
