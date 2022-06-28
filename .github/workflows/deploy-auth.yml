@@ -51,7 +51,7 @@ jobs:
             ${{ github.workspace }}/config/k8s/auth_depl.yaml
             ${{ github.workspace }}/config/k8s/auth_mongo_depl.yaml
           images: |
-            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
           imagepullsecrets: |
             ${{ env.SECRET }}
           namespace: ${{ env.NAMESPACE }}
