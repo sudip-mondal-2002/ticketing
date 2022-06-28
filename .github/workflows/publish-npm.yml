@@ -21,7 +21,7 @@ jobs:
         run: npm install && npm run build
         working-directory: ./common
       - name: Publish package on NPM 📦
-        run: npm version patch && npm run publish
+        run: npm version patch && npm publish
         working-directory: ./common
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
