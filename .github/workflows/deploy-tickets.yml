@@ -6,6 +6,13 @@ on:
       - master
     paths:
       - 'tickets/**'
+env:
+  REGISTRY_NAME: ticketingregistry
+  CLUSTER_NAME: ticketing
+  CLUSTER_RESOURCE_GROUP: SudipMondal 
+  NAMESPACE: default
+  SECRET: ticketing
+  APP_NAME: ticketing/tickets
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,12 +22,36 @@ jobs:
           submodules: true
           
       - name: Login to ACR
-        uses: aliyun/acr-login@v1
+        uses: azure/docker-login@v1
         with:
-          login-server: ticketingregistry.azurecr.io
-          username: "${{ secrets.REGISTRY_USERNAME }}"
-          password: "${{ secrets.REGISTRY_PASSWORD }}"
+          login-server: ${{ env.REGISTRY_NAME }}.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }} 
+          password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Build and push image
         run: |
-          cd auth && docker build -t ticketingregistry.azurecr.io/ticketing/tickets .
-          docker push ticketingregistry.azurecr.io/ticketing/tickets
+          docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
+          docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
+        working-directory: ./tickets
+      - uses: azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          cluster-name: ${{ env.CLUSTER_NAME }}
+          resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+      - uses: azure/k8s-create-secret@v1
+        with:
+          container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
+          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          secret-name: ${{ env.SECRET }}
+          namespace: ${{ env.NAMESPACE }}
+          arguments: --force true
+      - uses: azure/k8s-deploy@v1
+        with:
+          manifests: |
+            ${{ github.workspace }}/config/k8s/tickets_depl.yaml
+            ${{ github.workspace }}/config/k8s/tickets_mongo_depl.yaml
+          images: |
+            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
+          imagepullsecrets: |
+            ${{ env.SECRET }}
+          namespace: ${{ env.NAMESPACE }}

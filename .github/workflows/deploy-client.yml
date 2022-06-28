@@ -1,18 +1,18 @@
-name: deploy-orders
+name: deploy-client
 
 on:
   push:
     branches:
       - master
     paths:
-      - 'orders/**'
+      - 'client/**'
 env:
   REGISTRY_NAME: ticketingregistry
   CLUSTER_NAME: ticketing
   CLUSTER_RESOURCE_GROUP: SudipMondal 
   NAMESPACE: default
   SECRET: ticketing
-  APP_NAME: ticketing/orders
+  APP_NAME: ticketing/client
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,7 +31,7 @@ jobs:
         run: |
           docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
           docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
-        working-directory: ./orders
+        working-directory: ./client
       - uses: azure/aks-set-context@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
@@ -48,8 +48,8 @@ jobs:
       - uses: azure/k8s-deploy@v1
         with:
           manifests: |
-            ${{ github.workspace }}/config/k8s/orders_depl.yaml
-            ${{ github.workspace }}/config/k8s/orders_mongo_depl.yaml
+            ${{ github.workspace }}/config/k8s/client_depl.yaml
+            ${{ github.workspace }}/config/k8s/client_mongo_depl.yaml
           images: |
             ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}
           imagepullsecrets: |
