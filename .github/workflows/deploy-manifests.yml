@@ -35,5 +35,5 @@ jobs:
           namespace: ${{ env.NAMESPACE }}
           arguments: --force true
       - run: |
-          kubectl apply -f ./config/k8s/*.yaml
-          kubectl apply -f ./config/k8s-prod/*.yaml
+          kubectl apply -f ./config/k8s
+          kubectl apply -f ./config/k8s-prod
