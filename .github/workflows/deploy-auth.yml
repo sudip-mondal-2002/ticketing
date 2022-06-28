@@ -24,3 +24,13 @@ jobs:
         run: |
           cd auth && docker build -t ticketingregistry.azurecr.io/ticketing/auth .
           docker push ticketingregistry.azurecr.io/ticketing/auth
+      - name: Azure CLI login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: AKS Context setting
+        run: az aks get-credentials --resource-group SudipMondal --name ticketing
+      - name: Restart kubernetes deployment
+        run: kubectl rollout restart deployment auth-depl
