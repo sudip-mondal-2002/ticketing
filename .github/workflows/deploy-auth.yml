@@ -29,10 +29,18 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           environment: 'AzureStack'
+      - name: Set up kubelogin for non-interactive login
+        run: |
+          curl -LO https://github.com/Azure/kubelogin/releases/download/v0.0.9/kubelogin-linux-amd64.zip
+          sudo unzip -j kubelogin-linux-amd64.zip -d /usr/local/bin
+          rm -f kubelogin-linux-amd64.zip
+          kubelogin --version
       - name: AKS Context Set
         uses: azure/aks-set-context@v2
         with:
           resource-group: 'SudipMondal'
           cluster-name: 'ticketing'
+          admin: 'false'
+          use-kubelogin: 'true'
       - name: Restart kubernetes deployment
         run: kubectl rollout restart deployment auth-depl
