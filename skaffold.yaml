@@ -5,6 +5,7 @@ deploy:
   kubectl:
     manifests:
       - config/k8s/*.yaml
+      - config/k8s-dev/*.yaml
 
 build:
   artifacts:
